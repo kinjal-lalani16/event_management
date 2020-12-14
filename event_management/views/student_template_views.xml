@@ -1,0 +1,166 @@
+<odoo>
+
+    <template id="portal_student" name="Portal student">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Students</t>
+            </t>
+            <t t-if="not students">
+                <p>There are currently no student in your account.</p>
+            </t>
+            <t t-call="portal.portal_table" t-if="students">
+                <thead>
+                    <tr class="active">
+                        <th>student ID #</th>
+                        <th class="text-right">Name</th>
+                        <th class="text-right">Dob</th>
+                        <th class="text-right">Eamil</th>
+                        <th class="text-right">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-as="student" t-foreach="students">
+                        <tr>
+                            <td id="id" style="display:none">
+                                <span>
+                                    <t t-esc="student.id"/>
+                                </span>
+                            </td>
+                            <td id="roll_no">
+                                <t t-esc="student.roll_no"/>
+                            </td>
+                            <td id="name" class="text-right">
+                                <span t-field="student.name"/>
+                            </td>
+                            <td id="dob" class="text-right">
+                                <span t-field="student.dob"/>
+                            </td>
+                            <td id="email" class="text-right" >
+                                <span t-field="student.email"/>
+                            </td>
+                            <td class="text-right">
+                               <button role="button" class="float-right no-decoration button-edit"> <i class="fa fa-edit"/> Edit</button>
+                               <!-- data-toggle="modal" data-target="#des_pop_up" href="#" -->
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+            <div>
+                <button class="btn btn-secondary mt32 d-none button-create d-xl-inline-block xyz" role="button">
+                    <span class="xyz">New </span>
+                </button>
+            </div>
+
+            <!-- Student record popup (Template thi try karvanu baaki che)-->
+            <div class="modal fade" id="des_pop_up_new" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Students</h3>
+                            <button type="button" class="close" data-dismiss="modal">&amp;times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="student_form" class="s_website_form container-fluid mt32" method="post">
+                                <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                                <input type="text" name="id" id="st_id"/>
+                                <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                    <label class="col-lg-3 col-md-4 col-form-label" for="name">Name</label>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input class="form-control o_website_form_input" id="student_name" name="name" required="required"  type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                    <label class="col-lg-3 col-md-4 col-form-label" for="dob">Dob</label>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input class="form-control o_website_form_input" id="student_dob" name="dob" required="required" type="date"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                    <label class="col-lg-3 col-md-4 col-form-label" for="email">Email</label>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input class="form-control o_website_form_input" id="student_email" name="email" required="required"  type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                        <button class="btn btn-primary float-right mb32" id="button-common" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+<!--     <template id="student_form" name="student">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Student Details</t>
+
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="col-md-8">
+                        <section class="pt8 pb8">
+                            <div class="container mt-2">
+                                <form action="/submit_details/" class="s_website_form container-fluid mt32" data-editable-form="false" data-model_name="job.designation" data-success_page="                                     /contactus-thank-you" enctype="multipart/form-data" method="post" role="form">
+                                    <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                                    <input name="st_id" t-att-value="0" type="hidden"/>
+                                    <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                        <label class="col-lg-3 col-md-4 col-form-label" for="name">Name</label>
+                                        <div class="col-lg-7 col-md-8">
+                                            <input class="form-control o_website_form_input" name="name" required="required" t-att-value="name" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                        <label class="col-lg-3 col-md-4 col-form-label" for="dob">Dob</label>
+                                        <div class="col-lg-7 col-md-8">
+                                            <input class="form-control o_website_form_input" name="dob" required="required" t-att-value="dob" type="date"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row form-field o_website_form_required_custom o_has_error">
+                                        <label class="col-lg-3 col-md-4 col-form-label" for="email">Email</label>
+                                        <div class="col-lg-7 col-md-8">
+                                            <input class="form-control o_website_form_input" name="email" required="required" t-att-value="email" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                            <button class="btn btn-primary float-right mb32" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template> -->
+    <!--  <template id="thank_you">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_1"/>
+                <div class="container pt-3">
+                    <h1>Thanks!</h1>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="alert alert-success" role="status">Your message has been sent successfully.
+
+
+
+                                <button class="close" data-dismiss="alert" type="button">&amp;times;</button></div>
+                            <p>We will get back to you shortly.
+                    </p>
+                        </div>
+                        <div class="col-lg-4">
+                            <t t-call="website.company_description"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_2"/>
+            </div>
+        </t>
+    </template> -->
+</odoo>

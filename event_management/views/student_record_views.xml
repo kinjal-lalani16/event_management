@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="student_record_tree_view" model="ir.ui.view">
+        <field name="name">student.tree.view</field>
+        <field name="model">student.record</field>
+        <field name="arch" type="xml">
+            <tree string="Students">
+                <field name="roll_no"/>
+                <field name="name"/>
+                <field name="dob"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+    <record id="student_record_form_view" model="ir.ui.view">
+        <field name="name">student.form.view</field>
+        <field name="model">student.record</field>
+        <field name="arch" type="xml">
+            <form string="Students">
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="roll_no"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="dob"/>
+                            </group>
+                            <group>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_view_student">
+        <field name="name">Student</field>
+        <field name="res_model">student.record</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create New student</p>
+        </field>
+    </record>
+   <menuitem id="menu_student" name="student" action="action_view_student"/>
+
+</odoo>
